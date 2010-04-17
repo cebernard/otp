@@ -614,6 +614,57 @@ static ERL_NIF_TERM release_resource(ErlNifEnv* env, int argc, const ERL_NIF_TER
     return enif_make_atom(env,"ok");
 }
 
+/*
+ * argv[0] atom of length of 6
+ * argv[1] list of length of 6
+ * argv[2] iolist of length of 6
+ */
+static ERL_NIF_TERM length_test(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
+{
+    unsigned alen, llen, iolen;
+
+    if (!enif_get_atom_length(env, argv[0], &alen) || alen != 6)  {
+	return enif_make_badarg(env);
+    }
+
+    if (!enif_get_list_length(env, argv[1], &llen) || llen != 6)  {
+	return enif_make_badarg(env);
+    }
+
+    if (!enif_get_iolist_length(env, argv[2], &iolen) || iolen != 6)  {
+	return enif_make_badarg(env);
+    }
+
+    return enif_make_atom(env, "ok");
+}
+
+/*
+ * argv[0] an atom
+ * argv[1] a binary
+ * argv[2] a ref
+ * argv[3] 'ok'
+ * argv[4] a fun
+ * argv[5] a pid
+ * argv[6] a port
+ * argv[7] an empty list
+ * argv[8] a tuple
+ */
+static ERL_NIF_TERM check_is(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
+{
+    ERL_NIF_TERM ok_atom = enif_make_atom(env, "ok");
+
+    if (!enif_is_atom(env, argv[0])) return enif_make_badarg(env);
+    if (!enif_is_binary(env, argv[1])) return enif_make_badarg(env);
+    if (!enif_is_ref(env, argv[2])) return enif_make_badarg(env);
+    if (!enif_is_identical(env, argv[3], ok_atom)) return enif_make_badarg(env);
+    if (!enif_is_fun(env, argv[4])) return enif_make_badarg(env);
+    if (!enif_is_pid(env, argv[5])) return enif_make_badarg(env);
+    if (!enif_is_port(env, argv[6])) return enif_make_badarg(env);
+    if (!enif_is_empty_list(env, argv[7])) return enif_make_badarg(env);
+    if (!enif_is_tuple(env, argv[8])) return enif_make_badarg(env);
+
+    return ok_atom;
+}
 
 static ErlNifFunc nif_funcs[] =
 {
@@ -640,7 +691,9 @@ static ErlNifFunc nif_funcs[] =
     {"get_resource", 2, get_resource},
     {"release_resource", 1, release_resource},
     {"last_resource_dtor_call", 0, last_resource_dtor_call},
-    {"make_new_resource", 2, make_new_resource}
+    {"make_new_resource", 2, make_new_resource},
+    {"length_test", 3, length_test},
+    {"check_is", 9, check_is}
 
 };
 
