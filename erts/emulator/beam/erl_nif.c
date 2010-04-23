@@ -232,6 +232,11 @@ int enif_is_ref(ErlNifEnv* env, ERL_NIF_TERM term)
     return is_ref(term);
 }
 
+int enif_is_tuple(ErlNifEnv* env, ERL_NIF_TERM term)
+{
+    return is_tuple(term);
+}
+
 static void aligned_binary_dtor(struct enif_tmp_obj_t* obj)
 {
     erts_free_aligned_binary_bytes((byte*)obj);
@@ -494,6 +499,17 @@ int enif_get_atom(ErlNifEnv* env, Eterm atom, char* buf, unsigned len)
     return ap->len + 1;
 }
 
+int enif_get_atom_length(ErlNifEnv* env, Eterm atom, unsigned* len)
+{
+    Atom* ap;
+    if (is_not_atom(atom)) {
+	return 0;
+    }
+    ap = atom_tab(atom_val(atom));
+    *len = ap->len;
+    return 1;
+}
+
 int enif_get_int(ErlNifEnv* env, Eterm term, int* ip)
 {
 #if SIZEOF_INT ==  ERTS_SIZEOF_ETERM
@@ -564,6 +580,16 @@ int enif_get_double(ErlNifEnv* env, Eterm term, double* dp)
     return 1;
 }
 
+int enif_get_iolist_length(ErlNifEnv* env, Eterm term, unsigned* len)
+{
+    int sz;
+    if ((sz = io_list_len(term)) < 0) {
+	return 0;
+    }
+    *len = sz;
+    return 1;
+}
+
 int enif_get_list_cell(ErlNifEnv* env, Eterm term, Eterm* head, Eterm* tail)
 {
     Eterm* val;
@@ -571,6 +597,13 @@ int enif_get_list_cell(ErlNifEnv* env, Eterm term, Eterm* head, Eterm* tail)
     val = list_val(term);
     *head = CAR(val);
     *tail = CDR(val);
+    return 1;
+}
+
+int enif_get_list_length(ErlNifEnv* env, Eterm list, unsigned* len)
+{
+    if (is_not_list(list)) return 0;
+    *len = list_length(list);
     return 1;
 }
 

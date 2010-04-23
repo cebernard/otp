@@ -28,9 +28,10 @@
 /* Version history:
 ** 0.1: R13B03
 ** 1.0: R13B04
+** 1.1: R14A
 */
 #define ERL_NIF_MAJOR_VERSION 1
-#define ERL_NIF_MINOR_VERSION 0
+#define ERL_NIF_MINOR_VERSION 1
 
 #include <stdlib.h>
 

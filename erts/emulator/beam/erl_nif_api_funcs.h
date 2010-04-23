@@ -105,6 +105,10 @@ ERL_NIF_API_FUNC_DECL(void,enif_release_resource,(ErlNifEnv*, void* obj));
 ERL_NIF_API_FUNC_DECL(ERL_NIF_TERM,enif_make_resource,(ErlNifEnv*, void* obj));
 ERL_NIF_API_FUNC_DECL(int,enif_get_resource,(ErlNifEnv*, ERL_NIF_TERM term, ErlNifResourceType* type, void** objp));
 ERL_NIF_API_FUNC_DECL(unsigned,enif_sizeof_resource,(ErlNifEnv*, void* obj));
+ERL_NIF_API_FUNC_DECL(int,enif_is_tuple,(ErlNifEnv*, ERL_NIF_TERM term));
+ERL_NIF_API_FUNC_DECL(int,enif_get_atom_length,(ErlNifEnv*, ERL_NIF_TERM atom, unsigned* len));
+ERL_NIF_API_FUNC_DECL(int,enif_get_list_length,(ErlNifEnv* env, ERL_NIF_TERM list, unsigned* len));
+ERL_NIF_API_FUNC_DECL(int,enif_get_iolist_length,(ErlNifEnv* env, ERL_NIF_TERM term, unsigned* len));
 /*
 ** Add last to keep compatibility on Windows!!!
 */
@@ -196,6 +200,10 @@ ERL_NIF_API_FUNC_DECL(unsigned,enif_sizeof_resource,(ErlNifEnv*, void* obj));
 #  define enif_get_resource ERL_NIF_API_FUNC_MACRO(enif_get_resource)
 #  define enif_sizeof_resource ERL_NIF_API_FUNC_MACRO(enif_sizeof_resource)
 
+#  define enif_is_tuple ERL_NIF_API_FUNC_MACRO(enif_is_tuple)
+#  define enif_get_atom_length ERL_NIF_API_FUNC_MACRO(enif_get_atom_length)
+#  define enif_get_list_length ERL_NIF_API_FUNC_MACRO(enif_get_list_length)
+#  define enif_get_iolist_length ERL_NIF_API_FUNC_MACRO(enif_get_iolist_length)
 #endif
 
 #ifndef enif_make_list1
