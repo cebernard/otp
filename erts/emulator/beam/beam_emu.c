@@ -1557,6 +1557,20 @@ void process_main(void)
   *
   */
 
+ OpCase(recv_mark_f): {
+     c_p->msg.mark = (BeamInstr *) Arg(0);
+     c_p->msg.saved_last = c_p->msg.last;
+     Next(1);
+ }
+
+ OpCase(i_recv_set): {
+     if (c_p->msg.mark == (BeamInstr *) (I+1)) {
+	 c_p->msg.save = c_p->msg.saved_last;
+     }
+     I++;
+     /* Fall through */
+ }
+
     /*
      * Pick up the next message and place it in x(0).
      * If no message, jump to a wait or wait_timeout instruction.
